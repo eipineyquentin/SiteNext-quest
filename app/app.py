@@ -359,10 +359,31 @@ def login():
     # Ne pas bloquer la connexion sur la longueur du mot de passe
     # La robustesse est imposée lors de l'inscription. Ici on vérifie uniquement la validité des identifiants.
     
-    # Tentative de connexion
+    # Tentative de connexion (compatible V1 et actuel)
     with conn(USERS_DB) as c:
         r = c.execute('SELECT id,role,name,password FROM users WHERE email=?', (email,)).fetchone()
-        if not r or not verify_pw(password, r['password']):
+        if not r:
+            flash("Email ou mot de passe incorrect.", "error")
+            record_login_attempt(client_ip)
+            return redirect(url_for('auth'))
+
+        stored_hash = r['password']
+        ok = False
+        # Vérification moderne (Werkzeug)
+        try:
+            ok = verify_pw(password, stored_hash)
+        except Exception:
+            ok = False
+
+        # Fallback V1: SHA-256 hex digest
+        if not ok:
+            try:
+                legacy = hashlib.sha256(password.encode()).hexdigest()
+                ok = (legacy == stored_hash)
+            except Exception:
+                ok = False
+
+        if not ok:
             flash("Email ou mot de passe incorrect.", "error")
             record_login_attempt(client_ip)
             return redirect(url_for('auth'))
