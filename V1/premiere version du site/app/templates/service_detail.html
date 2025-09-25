@@ -1,0 +1,27 @@
+
+{% extends "base.html" %}
+{% block content %}
+<a class="btn btn--sm btn--ghost" href="{{ url_for('services') }}">← Retour</a>
+<article class="card" style="margin-top:12px;">
+  <h1>{{ service['title'] }}</h1>
+  <p class="muted">{{ service['city'] }} · {{ service['student_name'] }}</p>
+  <p>{{ service['description'] }}</p>
+  {% if service['skills'] %}
+    <p>{% for s in service['skills'].split(',') %}<span class="badge">{{ s.strip() }}</span>{% endfor %}</p>
+  {% endif %}
+  <p>Mini‑CV: {{ service['cv'] or '—' }}</p>
+</article>
+<section style="margin-top:16px;">
+  <h2>Avis des entreprises</h2>
+  {% if reviews %}
+    {% for r in reviews %}
+      <div class="card" style="margin:8px 0;">
+        <p><strong>{{ r['author_name'] }}</strong> — {{ r['rating'] }}/5</p>
+        <p>{{ r['comment'] }}</p>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>Aucun avis pour le moment.</p>
+  {% endif %}
+</section>
+{% endblock %}

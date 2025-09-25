@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Créer un job étudiant</h1>
+<div class="card">
+  <p class="muted">🎓 Publiez un emploi à temps partiel adapté aux étudiants</p>
+  <form method="post">
+    <div class="form-group">
+      <label>Titre du job étudiant</label>
+      <input name="title" required placeholder="Ex: Job étudiant - Vente, Job étudiant - Baby-sitting">
+    </div>
+    <div class="form-group">
+      <label>Description détaillée</label>
+      <textarea name="description" rows="4" required placeholder="Décrivez les tâches à effectuer, les horaires flexibles, l'expérience recherchée..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Ville</label>
+      <input name="city" required placeholder="Ex: Lausanne">
+    </div>
+    <div class="form-group">
+      <label>Horaires (adaptés aux étudiants)</label>
+      <input name="schedule" placeholder="Ex: Week-end, Soirées, Vacances, Flexible...">
+    </div>
+    <div class="form-group">
+      <label>Salaire horaire</label>
+      <input name="salary" placeholder="Ex: 24 CHF/h, 26 CHF/h...">
+    </div>
+    <div class="form-group">
+      <label>Âge minimum</label>
+      <input name="min_age" type="number" min="16" max="99" value="16">
+    </div>
+    <div class="form-group">
+      <label>Compétences requises (séparées par des virgules)</label>
+      <input name="skills" placeholder="Ex: Contact client, Caisse, Manutention...">
+    </div>
+    <div class="form-group">
+      <label>Latitude (optionnel)</label>
+      <input name="lat" type="number" step="any" placeholder="46.5197">
+    </div>
+    <div class="form-group">
+      <label>Longitude (optionnel)</label>
+      <input name="lng" type="number" step="any" placeholder="6.6323">
+    </div>
+    <button class="btn btn--primary">Publier l'offre</button>
+  </form>
+</div>
+{% endblock %}
+

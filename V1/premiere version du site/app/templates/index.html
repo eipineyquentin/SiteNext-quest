@@ -1,0 +1,31 @@
+
+{% extends "base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="hero-text">
+    <h1 data-i18n="welcome_title">{{ t['welcome_title'] }}</h1>
+    <p data-i18n="welcome_sub">{{ t['welcome_sub'] }}</p>
+    <div class="actions">
+      <a class="btn btn--primary" href="{{ url_for('offers') }}" data-i18n="cta_view_offers">{{ t['cta_view_offers'] }}</a>
+      <a class="btn" href="{{ url_for('auth') }}" data-i18n="cta_create_account">{{ t['cta_create_account'] }}</a>
+    </div>
+  </div>
+  <div class="hero-media">
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+  </div>
+</section>
+<section class="features">
+  <article class="card">
+    <h3>Simplicité</h3>
+    <p>Publication et recherche d'offres en quelques clics. Fini les CV et lettres de motivation.</p>
+  </article>
+  <article class="card">
+    <h3>Transparence</h3>
+    <p>Descriptions détaillées, localisation précise et avis vérifiés pour une confiance totale.</p>
+  </article>
+  <article class="card">
+    <h3>Communauté</h3>
+    <p>Étudiants, entreprises et particuliers se rencontrent et grandissent ensemble.</p>
+  </article>
+</section>
+{% endblock %}

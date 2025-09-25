@@ -1,0 +1,14 @@
+
+{% extends "base.html" %}
+{% block content %}
+<h1>Politique de confidentialité</h1>
+<p>Ceci est un contenu de démonstration. Remplacez par votre texte.</p>
+{% if name in ('contact','bug') %}
+<form>
+  <div class="form-group"><label>Nom</label><input></div>
+  <div class="form-group"><label>Email</label><input type="email"></div>
+  <div class="form-group"><label>Message</label><textarea rows="5"></textarea></div>
+  <button class="btn btn--primary">Envoyer</button>
+</form>
+{% endif %}
+{% endblock %}

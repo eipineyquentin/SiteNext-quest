@@ -1,0 +1,27 @@
+
+{% extends "base.html" %}
+{% block content %}
+<h1>Tableau de bord entreprise</h1>
+{% if not current_user %}
+<div class="alert">Veuillez vous connecter.</div>
+<a class="btn" href="{{ url_for('auth') }}">Connexion / Inscription</a>
+{% elif current_user['role'] != 'entreprise' %}
+<div class="alert">Cette page est réservée aux entreprises.</div>
+{% else %}
+<div class="card">
+  <h3>Mes offres</h3>
+  {% if offers %}
+    {% for offer in offers %}
+      <div style="border:1px solid var(--border);padding:12px;margin:8px 0;border-radius:8px;">
+        <p><strong>{{ offer['title'] }}</strong> — {{ offer['city'] }}</p>
+        <p>{{ offer['description'][:100] }}...</p>
+        <a class="btn btn--sm" href="{{ url_for('offer_detail', oid=offer['id']) }}">Gérer</a>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>Aucune offre créée pour le moment.</p>
+  {% endif %}
+  <a class="btn btn--primary" href="{{ url_for('create_offer') }}">Créer une offre</a>
+</div>
+{% endif %}
+{% endblock %}

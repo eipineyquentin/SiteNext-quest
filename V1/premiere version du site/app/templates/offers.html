@@ -1,0 +1,41 @@
+
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+{% endblock %}
+{% block content %}
+<h1>Offres</h1>
+<div style="display:flex;gap:8px;margin:8px 0;">
+  <button class="btn btn--sm" onclick="toggleView('listView','mapView')">Liste</button>
+  <button class="btn btn--sm" onclick="toggleView('mapView','listView')">Carte</button>
+</div>
+<section id="listView" class="offer-list">
+  {% for o in offers %}
+  <article class="offer">
+    <h3>{{ o['title'] }}</h3>
+    <p>{{ o['description'] }}</p>
+    <p class="muted">{{ o['city'] }} · {{ o['org'] }}</p>
+    {% if o['skills'] %}
+      <p>{% for s in o['skills'].split(',') %}<span class="badge">{{ s.strip() }}</span>{% endfor %}</p>
+    {% endif %}
+    <a class="btn btn--primary btn--sm" href="{{ url_for('offer_detail', oid=o['id']) }}">Voir l’offre</a>
+  </article>
+  {% endfor %}
+</section>
+<section id="mapView" hidden>
+  <div id="map" class="map"></div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script>
+const points={{ markers|tojson }};
+const map=L.map('map').setView([46.5197,6.6323],10);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19}).addTo(map);
+points.forEach(p=>{
+  const m=L.marker([p.lat,p.lng]).addTo(map);
+  m.bindPopup(`<strong>${p.title}</strong><br>${p.city}<br><a href="/offer/${p.id}">Voir l’offre</a>`);
+});
+</script>
+{% endblock %}

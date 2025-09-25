@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Proposer un service</h1>
+<div class="card">
+  <form method="post">
+    <div class="form-group">
+      <label>Titre du service</label>
+      <input name="title" required placeholder="Ex: Cours de mathématiques">
+    </div>
+    <div class="form-group">
+      <label>Description détaillée</label>
+      <textarea name="description" rows="4" required placeholder="Décrivez votre service..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>Ville</label>
+      <input name="city" required placeholder="Ex: Lausanne">
+    </div>
+    <div class="form-group">
+      <label>Compétences (séparées par des virgules)</label>
+      <input name="skills" placeholder="Ex: Pédagogie, Maths, Informatique...">
+    </div>
+    <div class="form-group">
+      <label>Mini‑CV</label>
+      <textarea name="cv" rows="3" placeholder="Votre expérience, formation...">{{ current_user.get('cv','') }}</textarea>
+    </div>
+    <div class="form-group">
+      <label>Latitude (optionnel)</label>
+      <input name="lat" type="number" step="any" placeholder="46.5197">
+    </div>
+    <div class="form-group">
+      <label>Longitude (optionnel)</label>
+      <input name="lng" type="number" step="any" placeholder="6.6323">
+    </div>
+    <button class="btn btn--primary">Publier le service</button>
+  </form>
+</div>
+{% endblock %}
+

@@ -1,0 +1,60 @@
+
+{% extends "base.html" %}
+{% block content %}
+<h1>Nous contacter</h1>
+<div class="card">
+  <p>Vous avez des questions sur Next Quest ? N'hésitez pas à nous contacter !</p>
+  <form method="post">
+    <div class="form-group">
+      <label>Nom</label>
+      <input name="name" required>
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input name="email" type="email" required>
+    </div>
+    <div class="form-group">
+      <label>Type de demande</label>
+      <select name="contact_type" required>
+        <option value="general">Question générale</option>
+        <option value="support">Support technique</option>
+        <option value="partnership">Demande de partenariat</option>
+        <option value="api">Demande d'API</option>
+        <option value="collaboration">Proposition de collaboration</option>
+        <option value="bug">Signalement de bug</option>
+        <option value="feature">Demande de fonctionnalité</option>
+        <option value="business">Demande commerciale</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Sujet</label>
+      <input name="subject" placeholder="Votre question..." required>
+    </div>
+    <div class="form-group">
+      <label>Message</label>
+      <textarea name="message" rows="5" required placeholder="Décrivez votre question ou votre demande en détail..."></textarea>
+    </div>
+    <button class="btn btn--primary" type="submit">Envoyer</button>
+  </form>
+</div>
+
+<div class="card" style="margin-top:16px;">
+  <h3>🤝 Partenariats et collaborations</h3>
+  <p>Nous sommes ouverts aux partenariats avec :</p>
+  <ul>
+    <li><strong>🏢 Entreprises</strong> : Intégration d'offres d'emploi</li>
+    <li><strong>🎓 Universités</strong> : Collaboration avec les services d'orientation</li>
+    <li><strong>💼 Plateformes d'emploi</strong> : Échange d'offres via API</li>
+    <li><strong>🔧 Développeurs</strong> : Contribution au projet open source</li>
+  </ul>
+</div>
+
+<div class="card" style="margin-top:16px;">
+  <h3>📧 Informations de contact</h3>
+  <p><strong>Email général :</strong> contact@nextquest.ch</p>
+  <p><strong>Support technique :</strong> support@nextquest.ch</p>
+  <p><strong>Partenariats :</strong> partnerships@nextquest.ch</p>
+  <p><strong>Heures d'ouverture :</strong> Lundi - Vendredi, 9h - 17h</p>
+  <p><strong>Réponse :</strong> Nous nous engageons à répondre dans les 24h</p>
+</div>
+{% endblock %}

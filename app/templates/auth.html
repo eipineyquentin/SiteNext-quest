@@ -1,0 +1,40 @@
+
+{% extends "base.html" %}
+{% block content %}
+<h1>Connexion / Inscription</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert{% if category == 'success' %} success{% endif %}" style="margin-bottom:16px;">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<div class="card">
+  <form method="post" action="{{ url_for('login') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <h3>Se connecter</h3>
+    <p class="muted">Connectez-vous avec votre email et mot de passe. Le type de compte sera détecté automatiquement.</p>
+    <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
+    <div class="form-group"><label>Mot de passe</label><input type="password" name="password" required></div>
+    <button class="btn btn--primary">Se connecter</button>
+  </form>
+</div>
+<div class="card" style="margin-top:16px;">
+  <form method="post" action="{{ url_for('register') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <h3>S'inscrire</h3>
+    <div class="form-group"><label>Nom</label><input name="name" required></div>
+    <div class="form-group"><label>Email</label><input type="email" name="email" required></div>
+    <div class="form-group"><label>Mot de passe</label><input type="password" name="password" required></div>
+    <div class="form-group"><label>Rôle</label>
+      <select name="role"><option value="etudiant">Étudiant</option><option value="entreprise">Entreprise</option><option value="particulier">Particulier</option></select>
+    </div>
+    <div class="form-group"><label><input type="checkbox" name="accept" required> J'accepte les <a href="{{ url_for('terms') }}" target="_blank">Conditions d'utilisation</a></label></div>
+    <button class="btn btn--primary">Créer mon compte</button>
+  </form>
+</div>
+{% endblock %}

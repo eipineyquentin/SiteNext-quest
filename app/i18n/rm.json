@@ -1,0 +1,33 @@
+{
+  "site_name": "Next Quest",
+  "nav": {
+    "home": "Pagina iniziala",
+    "offers": "Offertas",
+    "services": "Servetschs",
+    "students": "Students",
+    "companies": "Interpresas",
+    "individuals": "Privats",
+    "profile": "Datas persunalas",
+    "admin": "Admin"
+  },
+  "cta_view_offers": "Vesair las offertas",
+  "cta_create_account": "Crear in conto",
+  "cta_sign_in": "S'annunziar",
+  "welcome_title": "Il futur dal lavur da students",
+  "welcome_sub": "Plattafurma svizra modèrna e segira per students, interpresas e privats.",
+  "theme": {
+    "auto": "Auto",
+    "light": "Cler",
+    "dark": "Stgir"
+  },
+  "lang": "Lingua",
+  "connected": "Collegì",
+  "logout": "Sortir",
+  "login_register": "S'annunziar / S'inscriver",
+  "footer": {
+    "privacy": "Protecziun da datas",
+    "contact": "Contact",
+    "bug": "Annunziar in bug",
+    "terms": "Cundiziuns d’utilisaziun"
+  }
+}

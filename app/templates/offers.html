@@ -1,0 +1,69 @@
+
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+{% endblock %}
+{% block content %}
+<h1>Offres</h1>
+<div class="card" style="margin-bottom:16px;">
+  <form method="get" style="display:flex;gap:8px;align-items:end;">
+    <div class="form-group" style="margin:0;">
+      <label>Rechercher</label>
+      <input name="search" value="{{ search }}" placeholder="Titre, description, compétences...">
+    </div>
+    <div class="form-group" style="margin:0;">
+      <label>Ville</label>
+      <input name="city" value="{{ city }}" placeholder="Ex: Lausanne">
+    </div>
+    <button class="btn btn--primary">Filtrer</button>
+    <a class="btn" href="{{ url_for('offers') }}">Effacer</a>
+  </form>
+</div>
+<div style="display:flex;gap:8px;margin:8px 0;">
+  <button class="btn btn--sm" onclick="toggleView('listView','mapView')">Liste</button>
+  <button class="btn btn--sm" onclick="toggleView('mapView','listView')">Carte</button>
+  {% if current_user and current_user['role'] in ('entreprise','particulier') %}
+  <a class="btn btn--primary btn--sm" href="{{ url_for('create_offer') }}">Créer une offre</a>
+  {% endif %}
+</div>
+        <section id="listView" class="offer-list">
+          {% for o in offers %}
+          <article class="offer{% if o.get('is_external') %} offer--external{% endif %}" data-offer-id="{{ o['id'] }}">
+            {% if o.get('is_external') %}
+            <div class="offer-badge offer-badge--external">🌐 Offre externe</div>
+            {% endif %}
+            <h3>{{ o['title'] }}</h3>
+            <p>{{ o['description'] }}</p>
+            <p class="muted">{{ o['city'] }} · {{ o['org'] }}</p>
+            {% if o['skills'] %}
+              <p>{% for s in o['skills'].split(',') %}<span class="badge">{{ s.strip() }}</span>{% endfor %}</p>
+            {% endif %}
+            <div class="offer-actions">
+              {% if o.get('is_external') and o.get('external_url') %}
+              <a class="btn btn--secondary btn--sm" href="{{ o['external_url'] }}" target="_blank" rel="noopener">Voir sur Indeed</a>
+              {% else %}
+              <a class="btn btn--primary btn--sm" href="{{ url_for('offer_detail', oid=o['id']) }}">Voir l'offre</a>
+              {% endif %}
+            </div>
+          </article>
+          {% endfor %}
+        </section>
+<section id="mapView" hidden>
+  <div id="map" class="map"></div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+// Définir les points pour la carte
+const points = {{ markers|tojson }};
+
+// Initialiser la carte quand le DOM est prêt
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof initMap === 'function') {
+        window.map = initMap('map', points, 46.5197, 6.6323, 10);
+    }
+});
+</script>
+{% endblock %}

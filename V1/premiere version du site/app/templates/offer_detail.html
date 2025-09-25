@@ -1,0 +1,38 @@
+
+{% extends "base.html" %}
+{% block content %}
+<a class="btn btn--sm btn--ghost" href="{{ url_for('offers') }}">← Retour</a>
+<article class="card" style="margin-top:12px;">
+  <h1>{{ offer['title'] }}</h1>
+  <p class="muted">{{ offer['city'] }} · {{ offer['org'] }}</p>
+  <p>{{ offer['description'] }}</p>
+  <p><strong>Horaires:</strong> {{ offer['schedule'] or '—' }} · <strong>Salaire:</strong> {{ offer['salary'] or '—' }} · <strong>Âge min.:</strong> {{ offer['min_age'] or '—' }}</p>
+  {% if offer['skills'] %}
+    <p>{% for s in offer['skills'].split(',') %}<span class="badge">{{ s.strip() }}</span>{% endfor %}</p>
+  {% endif %}
+  {% if current_user and current_user['role']=='etudiant' %}
+    {% if applied %}
+      <div class="success">Candidature envoyée – en attente de validation par l’entreprise.</div>
+    {% else %}
+      <form method="post" action="{{ url_for('apply_offer', oid=offer['id']) }}">
+        <button class="btn btn--primary" type="submit">Postuler</button>
+      </form>
+    {% endif %}
+  {% else %}
+    <div class="alert">Connecte-toi en tant qu'étudiant pour postuler.</div>
+  {% endif %}
+</article>
+<section style="margin-top:16px;">
+  <h2>Avis récents</h2>
+  {% if reviews %}
+    {% for r in reviews %}
+      <div class="card" style="margin:8px 0;">
+        <p><strong>{{ r['author_name'] }}</strong> — {{ r['rating'] }}/5</p>
+        <p>{{ r['comment'] }}</p>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>Aucun avis pour le moment.</p>
+  {% endif %}
+</section>
+{% endblock %}

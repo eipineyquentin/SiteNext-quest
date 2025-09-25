@@ -1,0 +1,68 @@
+
+{% extends "base.html" %}
+{% block content %}
+<h1>Tableau de bord étudiant</h1>
+{% if not current_user %}
+<div class="alert">Veuillez vous connecter.</div>
+<a class="btn" href="{{ url_for('auth') }}">Connexion / Inscription</a>
+{% elif current_user['role'] != 'etudiant' %}
+<div class="alert">Cette page est réservée aux étudiants.</div>
+{% else %}
+<div class="card">
+  <h3>Mes candidatures</h3>
+  {% if applications %}
+    {% for app in applications %}
+      <div style="border:1px solid var(--border);padding:12px;margin:8px 0;border-radius:8px;">
+        <p><strong>{{ app['title'] }}</strong> — {{ app['org'] }}</p>
+        <p>Statut: <span class="badge">{{ app['status'] }}</span> — {{ app['applied_at'][:10] }}</p>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>Aucune candidature pour le moment.</p>
+  {% endif %}
+</div>
+
+<div class="card" style="margin-top:16px;">
+  <h3>Mes services proposés</h3>
+  {% if services %}
+    {% for service in services %}
+      <div style="border:1px solid var(--border);padding:12px;margin:8px 0;border-radius:8px;">
+        <p><strong>{{ service['title'] }}</strong> — {{ service['city'] }}</p>
+        <p>{{ service['description'][:100] }}...</p>
+        <a class="btn btn--sm" href="{{ url_for('service_detail', sid=service['id']) }}">Voir</a>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>Aucun service proposé pour le moment.</p>
+  {% endif %}
+  <a class="btn btn--primary" href="{{ url_for('create_service') }}">Proposer un service</a>
+</div>
+
+<div class="card" style="margin-top:16px;">
+  <h3>Mon profil professionnel</h3>
+  {% if current_user.professional_data %}
+    {% set prof_data = current_user.professional_data %}
+    {% if prof_data.get('formation') or prof_data.get('experience') or prof_data.get('competences') %}
+      <div style="margin-bottom:12px;">
+        {% if prof_data.get('formation') %}
+          <p><strong>Formation :</strong> {{ prof_data['formation'][:100] }}{% if prof_data['formation']|length > 100 %}...{% endif %}</p>
+        {% endif %}
+        {% if prof_data.get('experience') %}
+          <p><strong>Expérience :</strong> {{ prof_data['experience'][:100] }}{% if prof_data['experience']|length > 100 %}...{% endif %}</p>
+        {% endif %}
+        {% if prof_data.get('competences') %}
+          <p><strong>Compétences :</strong> {{ prof_data['competences'][:100] }}{% if prof_data['competences']|length > 100 %}...{% endif %}</p>
+        {% endif %}
+      </div>
+      <a class="btn btn--sm" href="{{ url_for('profile') }}">Compléter mon profil</a>
+    {% else %}
+      <p class="muted">Votre profil professionnel n'est pas encore complété.</p>
+      <a class="btn btn--primary" href="{{ url_for('profile') }}">Compléter mon profil</a>
+    {% endif %}
+  {% else %}
+    <p class="muted">Votre profil professionnel n'est pas encore complété.</p>
+    <a class="btn btn--primary" href="{{ url_for('profile') }}">Compléter mon profil</a>
+  {% endif %}
+</div>
+{% endif %}
+{% endblock %}

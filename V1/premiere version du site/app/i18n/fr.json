@@ -1,0 +1,33 @@
+{
+  "site_name": "Next Quest",
+  "nav": {
+    "home": "Accueil",
+    "offers": "Offres",
+    "services": "Services",
+    "students": "Étudiants",
+    "companies": "Entreprises",
+    "individuals": "Particuliers",
+    "profile": "Données personnelles",
+    "admin": "Admin"
+  },
+  "cta_view_offers": "Voir les offres",
+  "cta_create_account": "Créer un compte",
+  "cta_sign_in": "Se connecter",
+  "welcome_title": "Le futur du travail étudiant",
+  "welcome_sub": "Plateforme suisse moderne et sécurisée pour étudiants, entreprises et particuliers.",
+  "theme": {
+    "auto": "Auto",
+    "light": "Clair",
+    "dark": "Sombre"
+  },
+  "lang": "Langue",
+  "connected": "Connecté",
+  "logout": "Se déconnecter",
+  "login_register": "Connexion / Inscription",
+  "footer": {
+    "privacy": "Politique de confidentialité",
+    "contact": "Nous contacter",
+    "bug": "Signaler un bug",
+    "terms": "Conditions d’utilisation"
+  }
+}

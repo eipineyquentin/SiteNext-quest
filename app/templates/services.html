@@ -1,0 +1,60 @@
+
+{% extends "base.html" %}
+{% block head %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+{% endblock %}
+{% block content %}
+<h1>Services</h1>
+<div class="card" style="margin-bottom:16px;">
+  <form method="get" style="display:flex;gap:8px;align-items:end;">
+    <div class="form-group" style="margin:0;">
+      <label>Rechercher</label>
+      <input name="search" value="{{ search }}" placeholder="Titre, description, compétences...">
+    </div>
+    <div class="form-group" style="margin:0;">
+      <label>Ville</label>
+      <input name="city" value="{{ city }}" placeholder="Ex: Lausanne">
+    </div>
+    <button class="btn btn--primary">Filtrer</button>
+    <a class="btn" href="{{ url_for('services') }}">Effacer</a>
+  </form>
+</div>
+<div style="display:flex;gap:8px;margin:8px 0;">
+  <button class="btn btn--sm" onclick="toggleView('listView','mapView')">Liste</button>
+  <button class="btn btn--sm" onclick="toggleView('mapView','listView')">Carte</button>
+  {% if current_user and current_user['role']=='etudiant' %}
+  <a class="btn btn--primary btn--sm" href="{{ url_for('create_service') }}">Proposer un service</a>
+  {% endif %}
+</div>
+<section id="listView" class="offer-list">
+  {% for s in services %}
+  <article class="offer">
+    <h3>{{ s['title'] }}</h3>
+    <p>{{ s['description'] }}</p>
+    <p class="muted">{{ s['city'] }} · {{ s['student_name'] }}</p>
+    {% if s['skills'] %}
+      <p>{% for k in s['skills'].split(',') %}<span class="badge">{{ k.strip() }}</span>{% endfor %}</p>
+    {% endif %}
+    <a class="btn btn--primary btn--sm" href="{{ url_for('service_detail', sid=s['id']) }}">Voir le service</a>
+  </article>
+  {% endfor %}
+</section>
+<section id="mapView" hidden>
+  <div id="map" class="map"></div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script>
+// Définir les points pour la carte
+const points = {{ markers|tojson }};
+
+// Initialiser la carte quand le DOM est prêt
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof initMap === 'function') {
+        window.map = initMap('map', points, 46.5197, 6.6323, 10);
+    }
+});
+</script>
+{% endblock %}

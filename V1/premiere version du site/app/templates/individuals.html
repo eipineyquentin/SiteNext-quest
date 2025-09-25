@@ -1,0 +1,12 @@
+
+{% extends "base.html" %}
+{% block content %}
+<h1>Particuliers</h1>
+<p class="muted">Cette page affiche un tableau de bord selon votre rôle.</p>
+{% if not current_user %}
+<div class="alert">Veuillez vous connecter.</div>
+<a class="btn" href="{{ url_for('auth') }}">Connexion / Inscription</a>
+{% else %}
+<div class="card"><p>Bienvenue, {{ current_user['name'] }} (rôle: {{ current_user['role'] }}).</p></div>
+{% endif %}
+{% endblock %}

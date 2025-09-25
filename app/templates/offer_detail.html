@@ -1,0 +1,91 @@
+
+{% extends "base.html" %}
+{% block content %}
+<a class="btn btn--sm btn--ghost" href="{{ url_for('offers') }}">← Retour</a>
+<article class="card" style="margin-top:12px;">
+  <h1>{{ offer['title'] }}</h1>
+  <p class="muted">{{ offer['city'] }} · {{ offer['org'] }}</p>
+  <p>{{ offer['description'] }}</p>
+  <p><strong>Horaires:</strong> {{ offer['schedule'] or '—' }} · <strong>Salaire:</strong> {{ offer['salary'] or '—' }} · <strong>Âge min.:</strong> {{ offer['min_age'] or '—' }}</p>
+  {% if offer['skills'] %}
+    <p>{% for s in offer['skills'].split(',') %}<span class="badge">{{ s.strip() }}</span>{% endfor %}</p>
+  {% endif %}
+  {% if current_user and current_user['role']=='etudiant' %}
+    {% if applied %}
+      <div class="success">Candidature envoyée – en attente de validation par l'employeur.</div>
+    {% else %}
+      <form method="post" action="{{ url_for('apply_offer', oid=offer['id']) }}">
+        <button class="btn btn--primary" type="submit">Postuler à ce job étudiant</button>
+      </form>
+    {% endif %}
+  {% else %}
+    <div class="alert">Connecte-toi en tant qu'étudiant pour postuler à ce job.</div>
+  {% endif %}
+</article>
+{% if current_user and current_user['role'] in ('entreprise','particulier') and current_user['name'] == offer['org'] %}
+<section style="margin-top:16px;">
+  <h2>Candidatures</h2>
+  {% if applications %}
+    {% for app in applications %}
+      <div class="card" style="margin:8px 0;">
+        <p><strong>{{ app['student_name'] }}</strong> — {{ app['applied_at'][:10] }}</p>
+        <p>Statut: <span class="badge">{{ app['status'] }}</span></p>
+        {% if app['status'] == 'pending' %}
+          <form method="post" action="{{ url_for('accept_application', oid=offer['id'], aid=app['id']) }}" style="display:inline;">
+            <button class="btn btn--sm btn--primary">Accepter</button>
+          </form>
+          <form method="post" action="{{ url_for('reject_application', oid=offer['id'], aid=app['id']) }}" style="display:inline;">
+            <button class="btn btn--sm">Refuser</button>
+          </form>
+        {% endif %}
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>Aucune candidature pour le moment.</p>
+  {% endif %}
+</section>
+{% endif %}
+<section style="margin-top:16px;">
+  <h2>Avis récents</h2>
+  {% if reviews %}
+    {% for r in reviews %}
+      <div class="card" style="margin:8px 0;">
+        <p><strong>{{ r['author_name'] }}</strong> — {{ r['rating'] }}/5 ⭐</p>
+        <p>{{ r['comment'] }}</p>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>Aucun avis pour le moment.</p>
+  {% endif %}
+  
+  {% if can_review %}
+  <div class="card" style="margin-top:16px;">
+    <h3>Laisser un avis</h3>
+    <p class="muted">Vous pouvez laisser un avis car vous avez travaillé pour cette entreprise.</p>
+    <form method="post" action="{{ url_for('create_review') }}">
+      <input type="hidden" name="offer_id" value="{{ offer['id'] }}">
+      <div class="form-group">
+        <label>Note (1-5)</label>
+        <select name="rating" required>
+          <option value="5">5 ⭐</option>
+          <option value="4">4 ⭐</option>
+          <option value="3">3 ⭐</option>
+          <option value="2">2 ⭐</option>
+          <option value="1">1 ⭐</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Commentaire</label>
+        <textarea name="comment" rows="3" placeholder="Votre avis sur cette entreprise..."></textarea>
+      </div>
+      <button class="btn btn--primary">Publier l'avis</button>
+    </form>
+  </div>
+  {% elif current_user and current_user['role']=='etudiant' %}
+  <div class="card" style="margin-top:16px; background:#f5f5f5; border-color:#ddd;">
+    <h3>Laisser un avis</h3>
+    <p class="muted">Vous ne pouvez laisser un avis que pour les entreprises avec lesquelles vous avez travaillé.</p>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,36 @@
+
+{% extends "base.html" %}
+{% block content %}
+<h1>Signaler un bug</h1>
+<div class="card">
+  <p>Vous avez rencontré un problème sur Next Quest ? Aidez-nous à améliorer la plateforme en signalant le bug !</p>
+  <form>
+    <div class="form-group"><label>Nom</label><input required></div>
+    <div class="form-group"><label>Email</label><input type="email" required></div>
+    <div class="form-group"><label>Type de problème</label>
+      <select required>
+        <option value="">Sélectionnez...</option>
+        <option value="bug">Bug technique</option>
+        <option value="ui">Problème d'interface</option>
+        <option value="performance">Lenteur</option>
+        <option value="security">Problème de sécurité</option>
+        <option value="other">Autre</option>
+      </select>
+    </div>
+    <div class="form-group"><label>Page concernée</label><input placeholder="Ex: /offers, /services..."></div>
+    <div class="form-group"><label>Description du problème</label><textarea rows="5" required placeholder="Décrivez le problème en détail..."></textarea></div>
+    <div class="form-group"><label>Étapes pour reproduire</label><textarea rows="3" placeholder="1. Aller sur... 2. Cliquer sur... 3. Le problème apparaît..."></textarea></div>
+    <button class="btn btn--primary">Signaler le bug</button>
+  </form>
+</div>
+<div class="card" style="margin-top:16px;">
+  <h3>Informations utiles</h3>
+  <p>Pour nous aider à résoudre le problème plus rapidement, vous pouvez inclure :</p>
+  <ul>
+    <li>Le navigateur utilisé (Chrome, Firefox, Safari...)</li>
+    <li>Le système d'exploitation (Windows, Mac, Linux...)</li>
+    <li>Une capture d'écran si possible</li>
+    <li>La date et l'heure du problème</li>
+  </ul>
+</div>
+{% endblock %}

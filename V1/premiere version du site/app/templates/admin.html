@@ -1,0 +1,36 @@
+
+{% extends "base.html" %}
+{% block content %}
+<h1>Administration</h1>
+{% if not current_user or current_user['role']!='admin' %}
+  <div class="alert">Réservé aux administrateurs.</div>
+{% else %}
+<section class="card">
+  <h3>Utilisateurs</h3>
+  <ul>
+  {% for u in users %}
+    <li>{{ u['id'] }} — {{ u['name'] }} ({{ u['role'] }}) — {{ u['email'] }}
+      {% if u['role']!='admin' %}<a href="{{ url_for('promote_admin', uid=u['id']) }}">[Nommer admin]</a>{% endif %}
+      <a href="{{ url_for('delete_user', uid=u['id']) }}" onclick="return confirm('Supprimer ?')">[Supprimer]</a>
+    </li>
+  {% endfor %}
+  </ul>
+</section>
+<section class="card" style="margin-top:16px;">
+  <h3>Offres</h3>
+  <ul>
+  {% for o in offers %}
+    <li>#{{ o['id'] }} — {{ o['title'] }} <a href="{{ url_for('admin_delete_offer', oid=o['id']) }}" onclick="return confirm('Supprimer ?')">[Supprimer]</a></li>
+  {% endfor %}
+  </ul>
+</section>
+<section class="card" style="margin-top:16px;">
+  <h3>Services</h3>
+  <ul>
+  {% for s in services %}
+    <li>#{{ s['id'] }} — {{ s['title'] }} <a href="{{ url_for('admin_delete_service', sid=s['id']) }}" onclick="return confirm('Supprimer ?')">[Supprimer]</a></li>
+  {% endfor %}
+  </ul>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,98 @@
+
+{% extends "base.html" %}
+{% block content %}
+        <section class="hero">
+          <div class="hero-text">
+            <h1 data-i18n="welcome_title">{{ t['welcome_title'] }}</h1>
+            <p data-i18n="welcome_sub">{{ t['welcome_sub'] }}</p>
+            <p class="muted" style="margin-top: 16px;"><strong>🎓 La plateforme suisse de référence pour les jobs étudiants</strong><br>
+            Connectez étudiants, entreprises et particuliers pour des emplois flexibles et rémunérateurs.</p>
+            <div class="actions">
+              <a class="btn btn--primary" href="{{ url_for('offers') }}" data-i18n="cta_view_offers">{{ t['cta_view_offers'] }}</a>
+              <a class="btn" href="{{ url_for('auth') }}" data-i18n="cta_create_account">{{ t['cta_create_account'] }}</a>
+            </div>
+          </div>
+          <div class="hero-media">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo">
+          </div>
+        </section>
+        <section class="features">
+          <article class="card">
+            <h3>🎓 Jobs étudiants qualifiés</h3>
+            <p>Emplois à temps partiel, stages et missions adaptés à votre emploi du temps d'étudiant. Horaires flexibles et rémunération équitable.</p>
+          </article>
+          <article class="card">
+            <h3>🏢 Entreprises de confiance</h3>
+            <p>Connectez-vous avec des entreprises suisses vérifiées qui comprennent les besoins des étudiants et offrent des conditions de travail équitables.</p>
+          </article>
+          <article class="card">
+            <h3>🔒 Plateforme sécurisée</h3>
+            <p>Système de notation et d'avis transparent, protection des données personnelles et environnement de confiance pour tous les utilisateurs.</p>
+          </article>
+        </section>
+
+<div class="card" style="margin-top:32px;background:#e8f4f8;border-color:#38c5bb;">
+  <h3>📚 Comment utiliser Next Quest</h3>
+  <p><strong>Découvrez notre plateforme en quelques étapes simples :</strong></p>
+  
+  <h4>👨‍🎓 Pour les étudiants :</h4>
+  <ol>
+    <li><strong>Créez votre compte</strong> et complétez votre profil professionnel</li>
+    <li><strong>Parcourez les jobs étudiants</strong> disponibles dans votre région</li>
+    <li><strong>Postulez aux offres</strong> qui correspondent à vos compétences</li>
+    <li><strong>Proposez vos services</strong> (cours, réparations, etc.)</li>
+    <li><strong>Recevez des avis</strong> pour construire votre réputation</li>
+  </ol>
+  
+  <h4>🏢 Pour les entreprises :</h4>
+  <ol>
+    <li><strong>Publiez vos offres</strong> de jobs étudiants</li>
+    <li><strong>Recevez des candidatures</strong> d'étudiants qualifiés</li>
+    <li><strong>Sélectionnez les candidats</strong> qui correspondent à vos besoins</li>
+    <li><strong>Donnez votre avis</strong> après collaboration</li>
+  </ol>
+  
+  <h4>👥 Pour les particuliers :</h4>
+  <ol>
+    <li><strong>Créez des offres</strong> pour des services ponctuels</li>
+    <li><strong>Engagez des étudiants</strong> pour vos projets</li>
+    <li><strong>Bénéficiez de tarifs étudiants</strong> avantageux</li>
+  </ol>
+</div>
+
+<div class="card" style="margin-top:32px;background:#f0f8ff;border-color:#4a90e2;">
+  <h3>🌟 Pourquoi choisir Next Quest ?</h3>
+  
+  <h4>💡 Nos valeurs</h4>
+  <ul>
+    <li><strong>🎓 Spécialisation étudiants</strong> : Plateforme dédiée aux besoins spécifiques des étudiants</li>
+    <li><strong>🤝 Transparence</strong> : Système d'avis et de notation pour tous les utilisateurs</li>
+    <li><strong>🔒 Sécurité</strong> : Protection des données et environnement de confiance</li>
+    <li><strong>🇨🇭 Local</strong> : Focus sur le marché suisse et les spécificités locales</li>
+    <li><strong>⚡ Efficacité</strong> : Matching intelligent entre offre et demande</li>
+  </ul>
+  
+  <h4>📊 Nos avantages</h4>
+  <ul>
+    <li><strong>💰 Gratuit</strong> : Aucun frais pour les étudiants</li>
+    <li><strong>🌍 Multilingue</strong> : Français, allemand, italien, romanche</li>
+    <li><strong>📱 Responsive</strong> : Accessible sur tous les appareils</li>
+    <li><strong>🎨 Moderne</strong> : Interface intuitive et design contemporain</li>
+    <li><strong>⚙️ Flexible</strong> : Horaires adaptés aux contraintes étudiantes</li>
+  </ul>
+</div>
+
+<div class="card" style="margin-top:32px;background:#fff8f5;border-color:#ff6b35;">
+  <h3>🌐 Intégration d'offres externes</h3>
+  <p><strong>Next Quest peut intégrer des offres d'emploi externes</strong> pour enrichir votre recherche.</p>
+  <p><strong>⚠️ Statut actuel :</strong> Système de démonstration uniquement</p>
+  <p>Pour une implémentation en production, il faudrait :</p>
+  <ul>
+    <li>🤝 <strong>Partenariats officiels</strong> avec des plateformes d'emploi</li>
+    <li>📋 <strong>APIs autorisées</strong> plutôt que du web scraping</li>
+    <li>⚖️ <strong>Conformité légale</strong> avec les conditions d'utilisation</li>
+    <li>🔒 <strong>Protection des données</strong> conforme au RGPD</li>
+  </ul>
+  <p><em>Le système actuel utilise des données de démonstration pour illustrer la fonctionnalité.</em></p>
+</div>
+{% endblock %}

@@ -1,0 +1,85 @@
+
+{% extends "base.html" %}
+{% block content %}
+<a class="btn btn--sm btn--ghost" href="{{ url_for('services') }}">← Retour</a>
+<article class="card" style="margin-top:12px;">
+  <h1>{{ service['title'] }}</h1>
+  <p class="muted">{{ service['city'] }} · {{ service['student_name'] }}</p>
+  <p>{{ service['description'] }}</p>
+  {% if service['skills'] %}
+    <p>{% for s in service['skills'].split(',') %}<span class="badge">{{ s.strip() }}</span>{% endfor %}</p>
+  {% endif %}
+  <div class="card" style="margin-top:16px;">
+    <h3>Profil professionnel de {{ service['student_name'] }}</h3>
+    {% if service.get('professional_data') %}
+      {% set prof_data = service.professional_data %}
+      {% if prof_data.get('formation') %}
+        <p><strong>Formation :</strong> {{ prof_data['formation'] }}</p>
+      {% endif %}
+      {% if prof_data.get('experience') %}
+        <p><strong>Expérience :</strong> {{ prof_data['experience'] }}</p>
+      {% endif %}
+      {% if prof_data.get('competences') %}
+        <p><strong>Compétences :</strong> {{ prof_data['competences'] }}</p>
+      {% endif %}
+      {% if prof_data.get('langues') %}
+        <p><strong>Langues :</strong> {{ prof_data['langues'] }}</p>
+      {% endif %}
+      {% if prof_data.get('disponibilite') %}
+        <p><strong>Disponibilité :</strong> {{ prof_data['disponibilite'] }}</p>
+      {% endif %}
+      {% if prof_data.get('objectifs') %}
+        <p><strong>Objectifs :</strong> {{ prof_data['objectifs'] }}</p>
+      {% endif %}
+      {% if prof_data.get('portfolio') %}
+        <p><strong>Portfolio :</strong> {{ prof_data['portfolio'] }}</p>
+      {% endif %}
+    {% else %}
+      <p class="muted">Aucune donnée professionnelle disponible.</p>
+    {% endif %}
+  </div>
+</article>
+<section style="margin-top:16px;">
+  <h2>Avis des entreprises</h2>
+  {% if reviews %}
+    {% for r in reviews %}
+      <div class="card" style="margin:8px 0;">
+        <p><strong>{{ r['author_name'] }}</strong> — {{ r['rating'] }}/5 ⭐</p>
+        <p>{{ r['comment'] }}</p>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>Aucun avis pour le moment.</p>
+  {% endif %}
+  
+  {% if can_review %}
+  <div class="card" style="margin-top:16px;">
+    <h3>Laisser un avis</h3>
+    <p class="muted">Vous pouvez laisser un avis sur cet étudiant.</p>
+    <form method="post" action="{{ url_for('create_review') }}">
+      <input type="hidden" name="service_id" value="{{ service['id'] }}">
+      <div class="form-group">
+        <label>Note (1-5)</label>
+        <select name="rating" required>
+          <option value="5">5 ⭐</option>
+          <option value="4">4 ⭐</option>
+          <option value="3">3 ⭐</option>
+          <option value="2">2 ⭐</option>
+          <option value="1">1 ⭐</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Commentaire</label>
+        <textarea name="comment" rows="3" placeholder="Votre avis sur cet étudiant..."></textarea>
+      </div>
+      <button class="btn btn--primary">Publier l'avis</button>
+    </form>
+  </div>
+  {% elif current_user and current_user['role'] in ('entreprise','particulier') %}
+  <div class="card" style="margin-top:16px; background:#f5f5f5; border-color:#ddd;">
+    <h3>Laisser un avis</h3>
+    <p class="muted">Vous avez déjà laissé un avis pour ce service.</p>
+  </div>
+  {% endif %}
+</section>
+{% endblock %}
