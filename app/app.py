@@ -785,6 +785,26 @@ def admin_delete_service(sid):
         c.execute('DELETE FROM services WHERE id=?',(sid,))
     return redirect(url_for('admin_panel'))
 
+def reset_users_db():
+    """Réinitialise la base utilisateurs et recrée le compte admin par défaut."""
+    try:
+        with conn(USERS_DB) as c:
+            c.execute('DROP TABLE IF EXISTS users')
+            c.execute('CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, name TEXT, email TEXT UNIQUE, password TEXT, role TEXT, cv TEXT, professional_data TEXT)')
+            c.execute('INSERT INTO users(name,email,password,role) VALUES(?,?,?,?)',('Admin','admin@nextquest.ch',hash_pw("admin"),'admin'))
+        print("Base utilisateurs réinitialisée")
+    except Exception as e:
+        print(f"Erreur réinitialisation utilisateurs: {e}")
+        raise
+
+@app.get('/admin/reset-users')
+def admin_reset_users():
+    user=get_user()
+    if not user or user['role']!='admin': return redirect(url_for('auth'))
+    reset_users_db()
+    flash("Base des comptes réinitialisée. Admin: admin@nextquest.ch / admin", 'success')
+    return redirect(url_for('admin_panel'))
+
 @app.route('/review/create', methods=['GET','POST'])
 def create_review():
     user=get_user()
