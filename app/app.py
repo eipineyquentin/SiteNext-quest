@@ -14,7 +14,30 @@ from security_config import SecurityConfig
 load_dotenv()
 
 app = Flask(__name__, static_folder='static', template_folder='templates')
-app.secret_key = os.environ.get('SECRET_KEY', secrets.token_hex(32))
+
+def _load_or_create_secret_key():
+    """Charge une SECRET_KEY stable depuis l'env ou un fichier dans db/.
+    Évite les invalidations de session/CSRF dues aux rechargements en dev.
+    """
+    env_key = os.environ.get('SECRET_KEY')
+    if env_key:
+        return env_key
+    try:
+        db_dir = os.path.join(os.path.dirname(__file__), '..', 'db')
+        os.makedirs(db_dir, exist_ok=True)
+        key_file = os.path.join(db_dir, 'secret_key')
+        if os.path.exists(key_file):
+            with open(key_file, 'r') as f:
+                return f.read().strip()
+        new_key = secrets.token_hex(32)
+        with open(key_file, 'w') as f:
+            f.write(new_key)
+        return new_key
+    except Exception as e:
+        print(f"DEBUG: SECRET_KEY fallback error: {e}")
+        return secrets.token_hex(32)
+
+app.secret_key = _load_or_create_secret_key()
 
 # Configuration de sécurité
 app.config['PERMANENT_SESSION_LIFETIME'] = SecurityConfig.SESSION_PERMANENT_LIFETIME
@@ -354,10 +377,9 @@ def login():
         record_login_attempt(client_ip)
         return redirect(url_for('auth'))
     
-    if len(password) < 6:
-        flash("Mot de passe trop court (minimum 6 caractères).", "error")
-        record_login_attempt(client_ip)
-        return redirect(url_for('auth'))
+    # Ne pas bloquer la connexion avec une longueur stricte ici: la robustesse
+    # de mot de passe est déjà imposée lors de l'inscription. Cela évite
+    # d'empêcher l'admin seedé ou d'anciens comptes de se connecter.
     
     # Tentative de connexion
     with conn(USERS_DB) as c:

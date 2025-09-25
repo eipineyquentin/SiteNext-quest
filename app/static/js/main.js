@@ -7,10 +7,14 @@ function toggleView(idShow, idHide) {
         showElement.hidden = false;
         hideElement.hidden = true;
         
-        // Si on affiche la carte, l'initialiser si ce n'est pas déjà fait
-        if (idShow === 'mapView' && window.map) {
+        // Si on affiche la carte, (ré)ajuster la taille et initialiser si besoin
+        if (idShow === 'mapView') {
             setTimeout(() => {
-                window.map.invalidateSize();
+                if (window.map && typeof window.map.invalidateSize === 'function') {
+                    window.map.invalidateSize();
+                } else if (typeof points !== 'undefined' && typeof initMap === 'function') {
+                    window.map = initMap('map', points, 46.5197, 6.6323, 10);
+                }
             }, 100);
         }
     }
@@ -64,13 +68,14 @@ function initMap(containerId, markers, centerLat = 46.5197, centerLng = 6.6323, 
     }
 }
 
-// Initialiser la carte quand le DOM est chargé
+// Initialiser la carte quand le DOM est chargé, uniquement si la vue carte est visible
 document.addEventListener('DOMContentLoaded', function() {
-    // Attendre un peu pour s'assurer que tous les éléments sont chargés
     setTimeout(() => {
         const mapContainer = document.getElementById('map');
-        if (mapContainer && typeof points !== 'undefined') {
-            window.map = initMap('map', points);
+        const mapView = document.getElementById('mapView');
+        const isVisible = mapView && !mapView.hidden;
+        if (mapContainer && typeof points !== 'undefined' && isVisible) {
+            window.map = initMap('map', points, 46.5197, 6.6323, 10);
         }
     }, 100);
 });
