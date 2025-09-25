@@ -54,16 +54,13 @@
 {% endblock %}
 {% block scripts %}
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+<script id="points-data" type="application/json">{{ markers|tojson }}</script>
 <script>
-// Définir les points pour la carte
-const points = {{ markers|tojson }};
-
-// Initialiser la carte quand le DOM est prêt
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof initMap === 'function') {
-        window.map = initMap('map', points, 46.5197, 6.6323, 10);
-    }
-});
-</script>
+  // Expose markers to main.js initialisation without embedding template braces in JS
+  (function(){
+    var el = document.getElementById('points-data');
+    if (el) { window.points = JSON.parse(el.textContent || '[]'); }
+  })();
+  </script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
 {% endblock %}
